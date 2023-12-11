@@ -23,6 +23,7 @@ Element Xpaths:
 Replace all occurrences of [Add The Xpath To The Element Here] with the actual Xpaths of the web elements you want to interact with.
 Alternatively change the locator and use the ID or Class Name.
 Home Page URL:
+Replace all occurrences of [Add The Xpath To The Element Here] with the actual Xpaths of the web elements you want to interact with in the Edge case tests.
 Replace Add Home Page URL Here with the URL of the application's home page. 2.
 Copy Dependencies from my Pom.xml file:
 
