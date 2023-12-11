@@ -1,0 +1,8 @@
+-------------------------------------------------------------------------------
+Test set: com.jacobflasko.AppTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.054 s <<< FAILURE! - in com.jacobflasko.AppTest
+com.jacobflasko.AppTest  Time elapsed: 0.052 s  <<< ERROR!
+java.lang.ExceptionInInitializerError
+	at com.jacobflasko.AppTest.<clinit>(AppTest.java:61)
+
