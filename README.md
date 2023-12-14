@@ -1,2 +1,2 @@
 # UI-Final-2023
- Jacob, Matt, Randy and Christian
+ Jacob, Matt, Randy and Thomas
