@@ -1,0 +1,89 @@
+﻿@{
+    ViewData["Title"] = "Information";
+}
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Information</title>
+</head>
+
+<body class="bg-light">
+
+    <h1 class="text-center">Enter your information</h1>
+
+    <div class="d-flex justify-content-around">
+        <div>
+            <div>
+
+                <div>
+                    <h3>Weight</h3>
+                    <form method = "post">
+                        <div class="form-group">
+                            <label for="startingWeight">Starting Weight</label>
+                            <input type="text" class="form-control w-75" name=startingWeight placeholder="000" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="currentWeight">Current Weight</label>
+                            <input type="text" class="form-control w-75" name=currentWeight placeholder="000" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="desiredWeight">Desired Weight</label>
+                            <input type="text" class="form-control w-75" name=desiredWeight placeholder="000" required>
+                        </div>
+                    </form>
+                </div>
+
+                <div>
+                    <h3>Height</h3>
+                    <form method="post">
+                        <div class="form-group">
+                            <input type="text" class="form-control w-75" name=HeightInInches placeholder="00" required>
+                        </div>
+                    </form>
+                </div>
+
+                <div>
+                    <h3>Gender</h3>
+                    <form method="post">
+                        <div class="form-group">
+                            <input type="text" class="form-control w-75" name=Gender required>
+                        </div>
+                    </form>
+                </div>
+
+                <div>
+                    <h3>Activity Level: 1-5</h3>
+                    <form method="post">
+                        <div class="form-group">
+                            <input type="text" class="form-control w-75" name=activityLevel placeholder="0" required>
+                        </div>
+                    </form>
+                </div>
+
+                <div>
+                    <h3>Birthday</h3>
+                    <form method="post">
+                        <div class="form-group">
+                            <input type="text" class="form-control w-75" name=Birthday placeholder="MM/DD/YYYY" required>
+                        </div>
+                    </form>
+                </div>
+
+                <div>
+                    <h3>Calories per day to lose weight</h3>
+                    <form method="post">
+                        <div class="form-group">
+                            <input type="text" class="form-control w-75" name=calories placeholder="0000" required>
+                        </div>
+                    </form>
+                </div>
+
+                <button type="submit" class="btn btn-success mt-4">Enter Information</button>
+
+            </div>
+        </div>
+    </div>
+</body>

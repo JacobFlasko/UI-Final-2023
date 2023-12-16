@@ -1,8 +1,61 @@
-﻿@{
+﻿﻿@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calorie Tracker</title>
+</head>
+<body class="bg-light">
+
+    <h1 class="text-center">FatAttack | Calorie Tracker</h1>
+
+    <div class="d-flex justify-content-around">
+        <div>
+            <div class="container mt-5">
+
+                <div class="mt-4">
+                    <h3>Record Food Eaten</h3>
+                    <form method="post">
+                        <div class="form-group">
+                            <label for="foodName">Food Name:</label>
+                            <input type="text" class="form-control w-75" name="foodName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="foodCalories">Calories:</label>
+                            <input type="number" class="form-control w-75" name="foodCalories" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary mt-4">Add Food</button>
+                    </form>
+                </div>
+
+                <div class="mt-4">
+                    <h3>Calories Left for the Day</h3>
+                    <p>Goal: <span class="font-weight-bold">@*@dailyCalorieGoal*@</span> calories</p>
+                    <p>Consumed: <span class="font-weight-bold">@*@currentCaloriesConsumed*@</span> calories</p>
+                    <p>Remaining: <span class="font-weight-bold">@*@caloriesLeft*@</span> calories</p>
+                </div>
+
+                <div class="mt-4">
+                    <h3>Weight Tracker</h3>
+                    <p>Weight Lost: <span class="font-weight-bold">@*@weightLost*@</span> lbs</p>
+                    <form method="post">
+                        <div class="form-group">
+                            <label for="weightLost">Enter Weight Lost (lbs):</label>
+                            <input type="number" class="form-control w-75 mt-3" name="weightLost">
+                        </div>
+
+                        <button type="submit" class="btn btn-success mt-4">Update Weight</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex flex-column">
+            <img class="w-75 h-auto m-3" src="~/images/Calories/100percent.png" />
+            <img class="w-75 h-auto m-3" src="~/images/Weight/Large.png" />
+        </div>
+    </div>
+</body>
