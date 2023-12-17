@@ -6,10 +6,12 @@ namespace Fitness_Tracker.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ClassDatabaseContext _context;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ClassDatabaseContext context, ILogger<HomeController> logger)
         {
+            _context = context;
             _logger = logger;
         }
 
@@ -23,7 +25,20 @@ namespace Fitness_Tracker.Controllers
 
         public IActionResult Index()
         {
-            return View(_viewModel);
+            GuifinalUser user = new GuifinalUser();
+            if(User.Identity.IsAuthenticated)
+            {
+                var temp = _context.GuifinalUsers.FindAsync(User.Identity.Name);
+                user = temp.Result;
+                int weightDifference = user.UserStartingWeight - user.UserDesiredWeight;
+                ViewData["LostPercent"] = (double)user.UserWeightLost/ weightDifference;
+            }
+            else
+            {
+                //user.UserId = User.Identity.Name;
+            }
+
+            return View(user);
         }
 
         [HttpPost]
@@ -38,13 +53,26 @@ namespace Fitness_Tracker.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        public IActionResult RecordWeightLost(double weightLost)
+        [HttpGet]
+        public IActionResult RecordWeightLost(GuifinalUser user)
         {
-            // Record the weight lost and update the view model
-            _viewModel.WeightLost += weightLost;
+            if (User.Identity.IsAuthenticated)
+            {
+                //user.UserCurrentWeight -= weightLost;
+                int lostWeight = user.UserStartingWeight - user.UserCurrentWeight;
+                int weightDifference = user.UserStartingWeight - user.UserDesiredWeight;
+                ViewData["LostPercent"] = (double)lostWeight / weightDifference;
+                ViewData["LostWeight"] = lostWeight;
+            }
+            else
+            {
+                //user.UserId = User.Identity.Name;
+            }
 
-            return RedirectToAction("Index");
+            // Record the weight lost and update the view model
+
+
+            return RedirectToAction("Index", user);
         }
 
         public IActionResult Privacy()

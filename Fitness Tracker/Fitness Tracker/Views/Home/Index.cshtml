@@ -1,7 +1,8 @@
-﻿@{
+﻿@model Fitness_Tracker.Models.GuifinalUser;
+
+@{
     ViewData["Title"] = "Home Page";
 }
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,56 +40,96 @@
     </script>
 </head>
 
+
 <body class="bg-light">
     <h1 class="text-center">FatAttack | Calorie Tracker</h1>
+    <h1>@Model.UserId</h1>
 
-    <div class="d-flex justify-content-around">
-        <div>
-            <div class="container mt-5">
-                <!-- Record Food Eaten -->
-                <div class="mt-4">
-                    <h3>Record Food Eaten</h3>
-                    <form method="post" asp-controller="Home" asp-action="RecordFood" onsubmit="updateImages(parseInt(this.foodCalories.value), 0)">
-                        <div class="form-group">
-                            <label for="foodName">Food Name:</label>
-                            <input type="text" class="form-control w-75" name="foodName" required>
+    @if(!User.Identity.IsAuthenticated)
+    {
+        <h1 class="text-center">Please login to check weight progress</h1>
+    }
+    else
+    {
+            <div class="d-flex justify-content-around">
+                <div>
+                    <div class="container mt-5">
+                        <!-- Record Food Eaten -->
+                        <div class="mt-4">
+                            <h3>Record Food Eaten</h3>
+                            <form method="post" asp-controller="Home" asp-action="RecordFood" onsubmit="updateImages(parseInt(this.foodCalories.value), 0)">
+                                <div class="form-group">
+                                    <label for="foodName">Food Name:</label>
+                                    <input type="text" class="form-control w-75" name="foodName" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="foodCalories">Calories:</label>
+                                    <input type="number" class="form-control w-75" name="foodCalories" required>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary mt-4">Add Food</button>
+                            </form>
                         </div>
 
-                        <div class="form-group">
-                            <label for="foodCalories">Calories:</label>
-                            <input type="number" class="form-control w-75" name="foodCalories" required>
+                        <!-- Calories Left for the Day -->
+                        <div class="mt-4">
+                            <h3>Calories Left for the Day</h3>
+                            <p>Goal: <span class="font-weight-bold">@Model.UserCaloriesToLoseWeight</span> calories</p>
+                            <p>Consumed: <span class="font-weight-bold">2000</span> calories</p>
+                            <p>Remaining: <span class="font-weight-bold">2000</span> calories</p>
                         </div>
 
-                        <button type="submit" class="btn btn-primary mt-4">Add Food</button>
-                    </form>
+                        <!-- Weight Tracker -->
+                        <div class="mt-4">
+                            <h3>Weight Tracker</h3>
+                            <p>Starting Weight: <span class="font-weight-bold">@Model.UserStartingWeight</span> lbs</p>
+                            <p>Current Weigth: <span class="font-weight-bold">@Model.UserCurrentWeight</span> lbs</p>
+                            <p>Goal Weight: <span class="font-weight-bold">@Model.UserDesiredWeight</span> lbs</p>
+                            <form method="" asp-controller="Home" asp-action="RecordWeightLost">
+                                <div class="form-group">
+                                    <label for="weightLost">Enter Weight Lost (lbs):</label>
+                                    <input type="number" class="form-control w-75 mt-3" value="@Model.UserWeightLost">
+                                </div>
+
+                                <button type="submit" class="btn btn-success mt-4">Update Weight</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
+                <div class="d-flex flex-column">
+                    <img id="calorieImage" class="w-75 h-auto m-3" src="~/images/Calories/100percent.png" />
 
-                <!-- Calories Left for the Day -->
-                <div class="mt-4">
-                    <h3>Calories Left for the Day</h3>
-                    <p>Goal: <span class="font-weight-bold">@Model.DailyCalorieGoal</span> calories</p>
-                    <p>Consumed: <span class="font-weight-bold">@Model.CurrentCaloriesConsumed</span> calories</p>
-                    <p>Remaining: <span class="font-weight-bold">@Model.CaloriesLeft</span> calories</p>
-                </div>
+                    <h1>@ViewData["LostPercent"]</h1>
+                    @if (Double.Parse(ViewData["LostPercent"].ToString()) <= 0.25)
+                    {
+                        <img id="weightImage" class="w-75 h-auto m-3" src="~/images/Weight/Large.png" />
+                    }
+                    else if (Double.Parse(ViewData["LostPercent"].ToString()) <= 0.50)
+                    {
+                        <img id="weightImage" class="w-75 h-auto m-3" src="~/images/Weight/Medium-Large.png" />
+                    }
+                    else if (Double.Parse(ViewData["LostPercent"].ToString()) <= 0.75)
+                    {
+                        <img id="weightImage" class="w-75 h-auto m-3" src="~/images/Weight/Medium.png" />
+                    }
+                    else if (Double.Parse(ViewData["LostPercent"].ToString()) < 1)
+                    {
+                        <img id="weightImage" class="w-75 h-auto m-3" src="~/images/Weight/Small-Medium.png" />
+                    }
+                    else if(Model.UserCurrentWeight <= Model.UserDesiredWeight)
+                    {
+                    <img id="weightImage" class="w-75 h-auto m-3" src="~/images/Weight/Small.png" />
+                    }
+                    else
+                    {
+                        <h1>Oops! There has been an error</h1>
+                    }
 
-                <!-- Weight Tracker -->
-                <div class="mt-4">
-                    <h3>Weight Tracker</h3>
-                    <p>Weight Lost: <span class="font-weight-bold">@Model.WeightLost</span> lbs</p>
-                    <form method="post" asp-controller="Home" asp-action="RecordWeightLost" onsubmit="updateImages(0, parseFloat(this.weightLost.value))">
-                        <div class="form-group">
-                            <label for="weightLost">Enter Weight Lost (lbs):</label>
-                            <input type="number" class="form-control w-75 mt-3" name="weightLost">
-                        </div>
-
-                        <button type="submit" class="btn btn-success mt-4">Update Weight</button>
-                    </form>
+                
                 </div>
             </div>
-        </div>
-        <div class="d-flex flex-column">
-            <img id="calorieImage" class="w-75 h-auto m-3" src="~/images/Calories/100percent.png" />
-            <img id="weightImage" class="w-75 h-auto m-3" src="~/images/Weight/Large.png" />
-        </div>
-    </div>
+    
+    }
 </body>
+

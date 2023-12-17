@@ -5,7 +5,7 @@ namespace Fitness_Tracker.Models
 {
     public partial class GuifinalUser
     {
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public int UserStartingWeight { get; set; }
         public int UserCurrentWeight { get; set; }
         public int UserDesiredWeight { get; set; }
@@ -15,6 +15,7 @@ namespace Fitness_Tracker.Models
         public DateTime UserBirthday { get; set; }
         public int UserAge { get; set; }
         public int UserCaloriesToLoseWeight { get; set; }
+        public int UserWeightLost { get; set; }
 
         public virtual GuifinalActivity UserActivityNavigation { get; set; } = null!;
         public virtual GuifinalGender UserGenderNavigation { get; set; } = null!;

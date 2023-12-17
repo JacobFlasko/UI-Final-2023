@@ -196,6 +196,8 @@ namespace Fitness_Tracker.Models
 
                 entity.Property(e => e.UserStartingWeight).HasColumnName("User_StartingWeight");
 
+                entity.Property(e => e.UserWeightLost).HasColumnName("User_WeightLost");
+
                 entity.HasOne(d => d.UserActivityNavigation)
                     .WithMany(p => p.GuifinalUsers)
                     .HasForeignKey(d => d.UserActivity)
