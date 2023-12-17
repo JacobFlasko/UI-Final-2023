@@ -1,12 +1,12 @@
 ﻿@model Fitness_Tracker.Models.GuifinalUser
 @{
-    ViewData["Title"] = "Information";
+    ViewData["Title"] = "Edit Info";
 }
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enter Your Information</title>
+    <title>Edit Your Information</title>
 </head>
 
 <body class="bg-light">
@@ -19,8 +19,7 @@
 
                 <div>
                     <h3>Username</h3>
-                    <!--method = "post"-->
-                    <form asp-action="Create">
+                    <form method="post">
                         <div class="form-group">
                             <label for="UserId">User ID</label>
                             <input asp-for="UserId" type="text" class="form-control w-75" name=UserId placeholder="name" required>
@@ -29,7 +28,7 @@
                     </form>
 
                     <h3>Weight</h3>
-                    <form method = "post">
+                    <form method="post">
                         <div class="form-group">
                             <label for="startingWeight">Starting Weight</label>
                             <input asp-for="UserStartingWeight" type="text" class="form-control w-75" name=startingWeight placeholder="000" required>
@@ -108,5 +107,7 @@
 </body>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
