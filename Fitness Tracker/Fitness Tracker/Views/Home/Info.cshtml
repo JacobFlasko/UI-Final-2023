@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Fitness_Tracker.Models.GuifinalUser
+@{
     ViewData["Title"] = "Information";
 }
 
@@ -17,21 +18,33 @@
             <div>
 
                 <div>
+                    <h3>Username</h3>
+                    <form method = "post">
+                        <div class="form-group">
+                            <label for="UserId">User ID</label>
+                            <input asp-for="UserId" type="text" class="form-control w-75" name=UserId placeholder="name" required>
+                            <span asp-validation-for="UserId" class="text-danger"></span>
+                        </div>
+                    </form>
+
                     <h3>Weight</h3>
                     <form method = "post">
                         <div class="form-group">
                             <label for="startingWeight">Starting Weight</label>
-                            <input type="text" class="form-control w-75" name=startingWeight placeholder="000" required>
+                            <input asp-for="UserStartingWeight" type="text" class="form-control w-75" name=startingWeight placeholder="000" required>
+                            <span asp-validation-for="UserStartingWeight" class="text-danger"></span>
                         </div>
 
                         <div class="form-group">
                             <label for="currentWeight">Current Weight</label>
-                            <input type="text" class="form-control w-75" name=currentWeight placeholder="000" required>
+                            <input asp-for="UserCurrentWeight" type="text" class="form-control w-75" name=currentWeight placeholder="000" required>
+                            <span asp-validation-for="UserCurrentWeight" class="text-danger"></span>
                         </div>
 
                         <div class="form-group">
                             <label for="desiredWeight">Desired Weight</label>
-                            <input type="text" class="form-control w-75" name=desiredWeight placeholder="000" required>
+                            <input asp-for="UserDesiredWeight" type="text" class="form-control w-75" name=desiredWeight placeholder="000" required>
+                            <span asp-validation-for="UserDesiredWeight" class="text-danger"></span>
                         </div>
                     </form>
                 </div>
@@ -40,7 +53,8 @@
                     <h3>Height</h3>
                     <form method="post">
                         <div class="form-group">
-                            <input type="text" class="form-control w-75" name=HeightInInches placeholder="00" required>
+                            <input asp-for="UserHeight" type="text" class="form-control w-75" name=HeightInInches placeholder="00" required>
+                            <span asp-validation-for="UserHeight" class="text-danger"></span>
                         </div>
                     </form>
                 </div>
@@ -49,7 +63,8 @@
                     <h3>Gender</h3>
                     <form method="post">
                         <div class="form-group">
-                            <input type="text" class="form-control w-75" name=Gender required>
+                            <input asp-for="UserGender" type="text" class="form-control w-75" name=Gender required>
+                            <select asp-for="UserGender" class="form-control" asp-items="ViewBag.UserGender"></select>
                         </div>
                     </form>
                 </div>
@@ -58,7 +73,8 @@
                     <h3>Activity Level: 1-5</h3>
                     <form method="post">
                         <div class="form-group">
-                            <input type="text" class="form-control w-75" name=activityLevel placeholder="0" required>
+                            <input asp-for="UserActivity" type="text" class="form-control w-75" name=activityLevel placeholder="0" required>
+                            <select asp-for="UserActivity" class="form-control" asp-items="ViewBag.UserActivity"></select>
                         </div>
                     </form>
                 </div>
@@ -67,7 +83,8 @@
                     <h3>Birthday</h3>
                     <form method="post">
                         <div class="form-group">
-                            <input type="text" class="form-control w-75" name=Birthday placeholder="MM/DD/YYYY" required>
+                            <input asp-for="UserBirthday" type="text" class="form-control w-75" name=Birthday placeholder="MM/DD/YYYY" required>
+                            <span asp-validation-for="UserBirthday" class="text-danger"></span>
                         </div>
                     </form>
                 </div>
@@ -76,14 +93,19 @@
                     <h3>Calories per day to lose weight</h3>
                     <form method="post">
                         <div class="form-group">
-                            <input type="text" class="form-control w-75" name=calories placeholder="0000" required>
+                            <input asp-for="UserCaloriesToLoseWeight" type="text" class="form-control w-75" name=calories placeholder="0000" required>
+                            <span asp-validation-for="UserCaloriesToLoseWeight" class="text-danger"></span>
                         </div>
                     </form>
                 </div>
 
-                <button type="submit" class="btn btn-success mt-4">Enter Information</button>
+                <button type="submit" value="Create" class="btn btn-success mt-4">Enter Information</button>
 
             </div>
         </div>
     </div>
 </body>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

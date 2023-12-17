@@ -1,11 +1,19 @@
-﻿using Fitness_Tracker.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Fitness_Tracker.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace Fitness_Tracker.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ClassDatabaseContext _context;
+
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -23,9 +31,19 @@ namespace Fitness_Tracker.Controllers
             return View();
         }
 
-        public IActionResult Info()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Info([Bind("UserId,UserStartingWeight,UserCurrentWeight,UserDesiredWeight,UserHeight,UserGender,UserActivity,UserBirthday,UserAge,UserCaloriesToLoseWeight")] GuifinalUser guifinalUser)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                _context.Add(guifinalUser);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["UserActivity"] = new SelectList(_context.GuifinalActivities, "ActivityId", "ActivityId", guifinalUser.UserActivity);
+            ViewData["UserGender"] = new SelectList(_context.GuifinalGenders, "GenderId", "GenderId", guifinalUser.UserGender);
+            return View(guifinalUser);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

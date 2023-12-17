@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Fitness_Tracker.Models.GuifinalUser>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_Layout";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserStartingWeight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserCurrentWeight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserDesiredWeight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserHeight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserBirthday)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserAge)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserCaloriesToLoseWeight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserActivityNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserGenderNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserStartingWeight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserCurrentWeight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserDesiredWeight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserHeight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserBirthday)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserAge)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserCaloriesToLoseWeight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserActivityNavigation.ActivityId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserGenderNavigation.GenderId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.UserId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.UserId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.UserId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
