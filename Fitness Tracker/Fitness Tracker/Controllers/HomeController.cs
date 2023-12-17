@@ -31,6 +31,18 @@ namespace Fitness_Tracker.Controllers
             return View();
         }
 
+        //public IActionResult Info()
+        //{
+        //    return View();
+        //}
+
+        public IActionResult Create()
+        {
+            ViewData["UserActivity"] = new SelectList(_context.GuifinalActivities, "ActivityId", "ActivityId");
+            ViewData["UserGender"] = new SelectList(_context.GuifinalGenders, "GenderId", "GenderId");
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Info([Bind("UserId,UserStartingWeight,UserCurrentWeight,UserDesiredWeight,UserHeight,UserGender,UserActivity,UserBirthday,UserAge,UserCaloriesToLoseWeight")] GuifinalUser guifinalUser)
