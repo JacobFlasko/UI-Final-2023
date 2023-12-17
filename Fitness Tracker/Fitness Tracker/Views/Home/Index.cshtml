@@ -86,7 +86,7 @@
                             <p>Starting Weight: <span class="font-weight-bold">@Model.UserStartingWeight</span> lbs</p>
                             <p>Current Weigth: <span class="font-weight-bold">@Model.UserCurrentWeight</span> lbs</p>
                             <p>Goal Weight: <span class="font-weight-bold">@Model.UserDesiredWeight</span> lbs</p>
-                            <form method="" asp-controller="Home" asp-action="RecordWeightLost">
+                            <form asp-controller="Home" asp-action="RecordWeightLost">
                                 <div class="form-group">
                                     <label for="weightLost">Enter Weight Lost (lbs):</label>
                                     <input type="number" class="form-control w-75 mt-3" value="@Model.UserWeightLost">
