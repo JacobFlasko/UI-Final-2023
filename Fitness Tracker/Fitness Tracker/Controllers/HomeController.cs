@@ -1,5 +1,6 @@
 ﻿using Fitness_Tracker.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
 
 namespace Fitness_Tracker.Controllers
@@ -98,6 +99,17 @@ namespace Fitness_Tracker.Controllers
 
 
             return View("Index", user);
+        }
+
+        public async Task<IActionResult> EditInfo()
+        {
+            //GuifinalUser user = new GuifinalUser();
+            var user = await _context.GuifinalUsers.FindAsync(User.Identity.Name);
+
+            ViewBag.UserGender = new SelectList(_context.GuifinalGenders, "GenderId", "GenderName", user.UserGender);
+            ViewBag.UserActivity = new SelectList(_context.GuifinalActivities, "ActivityId", "ActivityDescriptor", user.UserActivity);
+
+            return View(user);
         }
 
         public IActionResult Privacy()
