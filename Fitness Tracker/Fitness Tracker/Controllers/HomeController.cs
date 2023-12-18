@@ -46,6 +46,10 @@ namespace Fitness_Tracker.Controllers
 
                     var percentEaten = ((double)_viewModel.CaloriesConsumed / _viewModel.DailyCalorieGoal) * 100;
                     ViewData["CaloriesWrittenPercent"] = (Math.Truncate(percentEaten * 100) / 100);
+
+                    ViewData["Birthday"] = user.UserBirthday.Month + "/" + user.UserBirthday.Day + "/" + user.UserBirthday.Year;
+                    ViewData["Gender"] = _context.GuifinalGenders.FindAsync(user.UserGender).Result.GenderName ;
+                    ViewData["Activity"] = _context.GuifinalActivities.FindAsync(user.UserActivity).Result.ActivityDescriptor;
                 }
                 
 
@@ -83,6 +87,9 @@ namespace Fitness_Tracker.Controllers
             var percentEaten = ((double)_viewModel.CaloriesConsumed / _viewModel.DailyCalorieGoal) * 100;
             ViewData["CaloriesWrittenPercent"] = (Math.Truncate(percentEaten * 100) / 100);
 
+            ViewData["Birthday"] = user.UserBirthday.Month + "/" + user.UserBirthday.Day + "/" + user.UserBirthday.Year;
+            ViewData["Gender"] = _context.GuifinalGenders.FindAsync(user.UserGender).Result.GenderName;
+
             //ViewData["LostWeight"] = lostWeight;
 
             return View("Index", user);
@@ -107,6 +114,10 @@ namespace Fitness_Tracker.Controllers
 
                 var percentEaten = ((double)_viewModel.CaloriesConsumed / _viewModel.DailyCalorieGoal) *100;
                 ViewData["CaloriesWrittenPercent"] = (Math.Truncate(percentEaten * 100) / 100);
+
+                ViewData["Birthday"] = user.UserBirthday.Month + "/" + user.UserBirthday.Day + "/" + user.UserBirthday.Year;
+                ViewData["Gender"] = _context.GuifinalGenders.FindAsync(user.UserGender).Result.GenderName;
+
 
                 await _context.SaveChangesAsync();
 
