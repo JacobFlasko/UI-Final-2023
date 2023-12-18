@@ -57,7 +57,7 @@
                         <!-- Record Food Eaten -->
                         <div class="mt-4">
                             <h3>Record Food Eaten</h3>
-                            <form method="post" asp-controller="Home" asp-action="RecordFood" onsubmit="updateImages(parseInt(this.foodCalories.value), 0)">
+                            <form method="post" asp-action="RecordFood">
                                 <div class="form-group">
                                     <label for="foodName">Food Name:</label>
                                     <input type="text" class="form-control w-75" name="foodName" required>
@@ -76,8 +76,8 @@
                         <div class="mt-4">
                             <h3>Calories Left for the Day</h3>
                             <p>Goal: <span class="font-weight-bold">@Model.UserCaloriesToLoseWeight</span> calories</p>
-                            <p>Consumed: <span class="font-weight-bold">2000</span> calories</p>
-                            <p>Remaining: <span class="font-weight-bold">2000</span> calories</p>
+                            <p>Consumed: <span class="font-weight-bold">@ViewData["CaloriesConsumed"]</span> calories</p>
+                            <p>Remaining: <span class="font-weight-bold">@ViewData["CaloriesLeft"]</span> calories</p>
                         </div>
 
                         <!-- Weight Tracker -->

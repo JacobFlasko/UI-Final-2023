@@ -18,7 +18,7 @@ namespace Fitness_Tracker.Controllers
         private static CalorieTrackerViewModel _viewModel = new CalorieTrackerViewModel
         {
             DailyCalorieGoal = 2000, // Set your daily calorie goal
-            CurrentCaloriesConsumed = 0,
+            CaloriesConsumed = 0,
             CaloriesLeft = 2000, // Initialize to the daily goal
             WeightLost = 0
         };
@@ -31,7 +31,13 @@ namespace Fitness_Tracker.Controllers
                 var temp = _context.GuifinalUsers.FindAsync(User.Identity.Name);
                 user = temp.Result;
                 int weightDifference = user.UserStartingWeight - user.UserDesiredWeight;
-                ViewData["LostPercent"] = ((double)user.UserWeightLost/ weightDifference)*100;
+                ViewData["LostPercent"] = ((double)user.UserWeightLost / weightDifference) * 100;
+
+                _viewModel.DailyCalorieGoal = user.UserCaloriesToLoseWeight;
+                _viewModel.CaloriesLeft = user.UserCaloriesToLoseWeight;
+                ViewData["CaloriesLeft"] = _viewModel.CaloriesLeft;
+                ViewData["CaloriesConsumed"] = _viewModel.CaloriesConsumed;
+                
             }
             else
             {
@@ -45,12 +51,25 @@ namespace Fitness_Tracker.Controllers
         public IActionResult RecordFood(string foodName, int foodCalories)
         {
             // Record the food and update the view model
-            _viewModel.FoodName = foodName;
+            /*_viewModel.FoodName = foodName;
             _viewModel.FoodCalories = foodCalories;
             _viewModel.CurrentCaloriesConsumed += foodCalories;
-            _viewModel.CaloriesLeft -= foodCalories;
+            _viewModel.CaloriesLeft -= foodCalories;*/
 
-            return RedirectToAction("Index");
+            GuifinalUser user = new GuifinalUser();
+            var temp = _context.GuifinalUsers.FindAsync(User.Identity.Name);
+            user = temp.Result;
+            int weightDifference = user.UserStartingWeight - user.UserDesiredWeight;
+            ViewData["LostPercent"] = ((double)user.UserWeightLost / weightDifference) * 100;
+            _viewModel.CaloriesLeft -= foodCalories;
+            _viewModel.CaloriesConsumed += foodCalories;
+
+            ViewData["CaloriesLeft"] = _viewModel.CaloriesLeft;
+            ViewData["CaloriesConsumed"] = _viewModel.CaloriesConsumed;
+
+            //ViewData["LostWeight"] = lostWeight;
+
+            return View("Index", user);
         }
 
         [HttpPost]
@@ -65,7 +84,10 @@ namespace Fitness_Tracker.Controllers
                 user.UserCurrentWeight = user.UserStartingWeight - weightLost;
                 int weightDifference = user.UserStartingWeight - user.UserDesiredWeight;
                 ViewData["LostPercent"] = ((double)user.UserWeightLost / weightDifference)*100;
-                //ViewData["LostWeight"] = lostWeight;
+
+                ViewData["CaloriesLeft"] = _viewModel.CaloriesLeft;
+                ViewData["CaloriesConsumed"] = _viewModel.CaloriesConsumed;
+
             }
             else
             {
