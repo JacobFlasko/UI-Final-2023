@@ -26,7 +26,7 @@ namespace Fitness_Tracker.Controllers
         }
 
         // GET: GuifinalUsers/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string? id)
         {
             if (id == null || _context.GuifinalUsers == null)
             {
@@ -94,7 +94,7 @@ namespace Fitness_Tracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserId,UserStartingWeight,UserCurrentWeight,UserDesiredWeight,UserHeight,UserGender,UserActivity,UserBirthday,UserAge,UserCaloriesToLoseWeight")] GuifinalUser guifinalUser)
+        public async Task<IActionResult> Edit(string id, [Bind("UserId,UserStartingWeight,UserCurrentWeight,UserDesiredWeight,UserHeight,UserGender,UserActivity,UserBirthday,UserAge,UserCaloriesToLoseWeight")] GuifinalUser guifinalUser)
         {
             if (id != guifinalUser.UserId)
             {
@@ -127,7 +127,7 @@ namespace Fitness_Tracker.Controllers
         }
 
         // GET: GuifinalUsers/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string? id)
         {
             if (id == null || _context.GuifinalUsers == null)
             {
@@ -165,7 +165,7 @@ namespace Fitness_Tracker.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool GuifinalUserExists(int id)
+        private bool GuifinalUserExists(string id)
         {
           return (_context.GuifinalUsers?.Any(e => e.UserId == id)).GetValueOrDefault();
         }

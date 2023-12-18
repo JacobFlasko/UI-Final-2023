@@ -1,5 +1,7 @@
 ﻿using Fitness_Tracker.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace Fitness_Tracker.Controllers
@@ -104,6 +106,84 @@ namespace Fitness_Tracker.Controllers
         {
             return View();
         }
+
+        public IActionResult Info(int user)
+        {
+            ViewData["currentUser"] = user;
+            return View();
+            var details = from b in _context.GuifinalUsers select b;
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Info([Bind("UserId,UserStartingWeight,UserCurrentWeight,UserDesiredWeight,UserHeight,UserGender,UserActivity,UserBirthday,UserAge,UserCaloriesToLoseWeight")] GuifinalUser guifinalUser)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(guifinalUser);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["UserActivity"] = new SelectList(_context.GuifinalActivities, "ActivityId", "ActivityId", guifinalUser.UserActivity);
+            ViewData["UserGender"] = new SelectList(_context.GuifinalGenders, "GenderId", "GenderId", guifinalUser.UserGender);
+            return View(guifinalUser);
+        }
+
+        public async Task<IActionResult> EditInfo(int? id)
+        {
+            if (id == null || _context.GuifinalUsers == null)
+            {
+                return NotFound();
+            }
+
+            var guifinalUser = await _context.GuifinalUsers.FindAsync(id);
+            if (guifinalUser == null)
+            {
+                return NotFound();
+            }
+            //ViewData["UserActivity"] = new SelectList(_context.GuifinalActivities, "ActivityId", "ActivityId", guifinalUser.UserActivity);
+            //ViewData["UserGender"] = new SelectList(_context.GuifinalGenders, "GenderId", "GenderId", guifinalUser.UserGender);
+            return View(guifinalUser);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditInfo(/*int id,*/ [Bind("UserId,UserStartingWeight,UserCurrentWeight,UserDesiredWeight,UserHeight,UserGender,UserActivity,UserBirthday,UserAge,UserCaloriesToLoseWeight")] GuifinalUser user)
+        {
+            /*if (id != guifinalUser.UserId)
+            {
+                return NotFound();
+            }*/
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(user);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (user == null)
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["UserActivity"] = new SelectList(_context.GuifinalActivities, "ActivityId", "ActivityId", user.UserActivity);
+            ViewData["UserGender"] = new SelectList(_context.GuifinalGenders, "GenderId", "GenderId", user.UserGender);
+            return View(user);
+        }
+
+        /*private bool GuifinalUserExists(int id)
+        {
+            return (_context.GuifinalUsers?.Any(e => e.UserId == id)).GetValueOrDefault();
+        }*/
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
