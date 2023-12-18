@@ -3,37 +3,23 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-<head>
+<!--<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calorie Tracker</title>
-    <script>
-        function updateImages(calories, weightLost) {
-            // Update the source of the calorie image based on calories consumed
-            var calorieImage = document.getElementById('calorieImage');
-            if (calories >= 100) {
-                calorieImage.src = '~/images/Calories/100percent.png';
-            } else if (calories >= 80) {
-                calorieImage.src = '~/images/Calories/80percent.png';
-            } else if (calories >= 50) {
-                calorieImage.src = '~/images/Calories/50percent.png';
-            } else if (calories >= 10) {
-                calorieImage.src = '~/images/Calories/10percent.png';
-            } else {
-                calorieImage.src = '~/images/Calories/empty.png';
-            }
-        }
-    </script>
-</head>
+</head>-->
 
 
 <body class="bg-light">
     <h1 class="text-center">FatAttack | Calorie Tracker</h1>
-    <h1>@Model.UserId</h1>
 
     @if(!User.Identity.IsAuthenticated)
     {
         <h1 class="text-center">Please login to check weight progress</h1>
+    }
+    else if(Model == null)
+    {
+        <h1 class="text-center">Please enter your information to check your weight progress</h1>
     }
     else
     {
@@ -83,34 +69,61 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-flex flex-column">
-                    <img id="calorieImage" class="w-75 h-auto m-3" src="~/images/Calories/100percent.png" />
+                <div class="d-flex flex-column justify-context-center">
 
-                    <h1>@ViewData["LostPercent"]</h1>
-                    @if (Double.Parse(ViewData["LostPercent"].ToString()) <= 25)
+                    @if (Double.Parse(ViewData["CaloriePercent"].ToString()) >= 90)
                     {
-                        <img id="weightImage" class="w-75 h-auto m-3" src="~/images/Weight/Large.png" />
+                        <img id="calorieImage" class="w-50 h-50 m-3" src="~/images/Calories/100percent.png" />
                     }
-                    else if (Double.Parse(ViewData["LostPercent"].ToString()) <= 50)
+                    else if (Double.Parse(ViewData["CaloriePercent"].ToString()) >= 66)
                     {
-                        <img id="weightImage" class="w-75 h-auto m-3" src="~/images/Weight/Medium-Large.png" />
+                        <img id="calorieImage" class="w-50 h-50 m-3" src="~/images/Calories/80percent.png" />
                     }
-                    else if (Double.Parse(ViewData["LostPercent"].ToString()) <= 75)
+                    else if (Double.Parse(ViewData["CaloriePercent"].ToString()) >= 33)
                     {
-                        <img id="weightImage" class="w-75 h-auto m-3" src="~/images/Weight/Medium.png" />
+                        <img id="calorieImage" class="w-50 h-50 m-3" src="~/images/Calories/50percent.png" />
                     }
-                    else if (Double.Parse(ViewData["LostPercent"].ToString()) < 100)
+                    else if (Double.Parse(ViewData["CaloriePercent"].ToString()) > 0)
                     {
-                        <img id="weightImage" class="w-75 h-auto m-3" src="~/images/Weight/Small-Medium.png" />
+                        <img id="calorieImage" class="w-50 h-50 m-3" src="~/images/Calories/10percent.png" />
                     }
-                    else if(Model.UserCurrentWeight <= Model.UserDesiredWeight)
+                    else if (Double.Parse(ViewData["CaloriePercent"].ToString()) <= 0)
                     {
-                    <img id="weightImage" class="w-75 h-auto m-3" src="~/images/Weight/Small.png" />
+                        <img id="calorieImage" class="w-50 h-50 m-3" src="~/images/Calories/empty.png" />
+                        
                     }
                     else
                     {
                         <h1>Oops! There has been an error</h1>
                     }
+                    <h4>You have eaten @ViewData["CaloriesWrittenPercent"]% of your calories for today!</h4>
+
+
+                    @if (Double.Parse(ViewData["LostPercent"].ToString()) <= 25)
+                    {
+                        <img id="weightImage" class="w-50 h-50 m-3" src="~/images/Weight/Large.png" />
+                    }
+                    else if (Double.Parse(ViewData["LostPercent"].ToString()) <= 50)
+                    {
+                        <img id="weightImage" class="w-50 h-50 m-3" src="~/images/Weight/Medium-Large.png" />
+                    }
+                    else if (Double.Parse(ViewData["LostPercent"].ToString()) <= 75)
+                    {
+                        <img id="weightImage" class="w-50 h-50 m-3" src="~/images/Weight/Medium.png" />
+                    }
+                    else if (Double.Parse(ViewData["LostPercent"].ToString()) < 100)
+                    {
+                        <img id="weightImage" class="w-50 h-50 m-3" src="~/images/Weight/Small-Medium.png" />
+                    }
+                    else if(Model.UserCurrentWeight <= Model.UserDesiredWeight)
+                    {
+                        <img id="weightImage" class="w-50 h-50 m-3" src="~/images/Weight/Small.png" />
+                    }
+                    else
+                    {
+                        <h1>Oops! There has been an error</h1>
+                    }
+                    <h4>You are @ViewData["LostWrittenPercent"]% of the way to your desired weight!</h4>
 
                 
                 </div>

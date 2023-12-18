@@ -24,21 +24,31 @@ namespace Fitness_Tracker.Controllers
             WeightLost = 0
         };
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             GuifinalUser user = new GuifinalUser();
             if(User.Identity.IsAuthenticated)
             {
-                var temp = _context.GuifinalUsers.FindAsync(User.Identity.Name);
-                user = temp.Result;
-                int weightDifference = user.UserStartingWeight - user.UserDesiredWeight;
-                ViewData["LostPercent"] = ((double)user.UserWeightLost / weightDifference) * 100;
+                user = await _context.GuifinalUsers.FindAsync(User.Identity.Name);
+                if(user != null)
+                {
+                    int weightDifference = user.UserStartingWeight - user.UserDesiredWeight;
+                    ViewData["LostPercent"] = ((double)user.UserWeightLost / weightDifference) * 100;
+                    ViewData["LostWrittenPercent"] = (Math.Truncate((((double)user.UserWeightLost / weightDifference) * 100) * 100) / 100);
 
-                _viewModel.DailyCalorieGoal = user.UserCaloriesToLoseWeight;
-                _viewModel.CaloriesLeft = user.UserCaloriesToLoseWeight;
-                ViewData["CaloriesLeft"] = _viewModel.CaloriesLeft;
-                ViewData["CaloriesConsumed"] = _viewModel.CaloriesConsumed;
+
+                    _viewModel.DailyCalorieGoal = user.UserCaloriesToLoseWeight;
+                    _viewModel.CaloriesLeft = user.UserCaloriesToLoseWeight;
+
+                    ViewData["CaloriesLeft"] = _viewModel.CaloriesLeft;
+                    ViewData["CaloriesConsumed"] = _viewModel.CaloriesConsumed;
+                    ViewData["CaloriePercent"] = ((double)_viewModel.CaloriesLeft / _viewModel.DailyCalorieGoal) * 100;
+
+                    var percentEaten = ((double)_viewModel.CaloriesConsumed / _viewModel.DailyCalorieGoal) * 100;
+                    ViewData["CaloriesWrittenPercent"] = (Math.Truncate(percentEaten * 100) / 100);
+                }
                 
+
             }
             else
             {
@@ -49,7 +59,7 @@ namespace Fitness_Tracker.Controllers
         }
 
         [HttpPost]
-        public IActionResult RecordFood(string foodName, int foodCalories)
+        public async Task<IActionResult> RecordFood(string foodName, int foodCalories)
         {
             // Record the food and update the view model
             /*_viewModel.FoodName = foodName;
@@ -58,15 +68,20 @@ namespace Fitness_Tracker.Controllers
             _viewModel.CaloriesLeft -= foodCalories;*/
 
             GuifinalUser user = new GuifinalUser();
-            var temp = _context.GuifinalUsers.FindAsync(User.Identity.Name);
-            user = temp.Result;
+            user = await _context.GuifinalUsers.FindAsync(User.Identity.Name);
             int weightDifference = user.UserStartingWeight - user.UserDesiredWeight;
             ViewData["LostPercent"] = ((double)user.UserWeightLost / weightDifference) * 100;
+            ViewData["LostWrittenPercent"] = (Math.Truncate((((double)user.UserWeightLost / weightDifference) * 100) * 100) / 100);
             _viewModel.CaloriesLeft -= foodCalories;
             _viewModel.CaloriesConsumed += foodCalories;
 
+            _viewModel.DailyCalorieGoal = user.UserCaloriesToLoseWeight;
             ViewData["CaloriesLeft"] = _viewModel.CaloriesLeft;
             ViewData["CaloriesConsumed"] = _viewModel.CaloriesConsumed;
+            ViewData["CaloriePercent"] = ((double)_viewModel.CaloriesLeft / _viewModel.DailyCalorieGoal) * 100;
+
+            var percentEaten = ((double)_viewModel.CaloriesConsumed / _viewModel.DailyCalorieGoal) * 100;
+            ViewData["CaloriesWrittenPercent"] = (Math.Truncate(percentEaten * 100) / 100);
 
             //ViewData["LostWeight"] = lostWeight;
 
@@ -74,20 +89,26 @@ namespace Fitness_Tracker.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(int weightLost)
+        public async Task<IActionResult> Index(int weightLost)
         {
             GuifinalUser user = new GuifinalUser();
             if (User.Identity.IsAuthenticated)
             {
-                var temp = _context.GuifinalUsers.FindAsync(User.Identity.Name);
-                user = temp.Result;
+                user = await _context.GuifinalUsers.FindAsync(User.Identity.Name);
                 user.UserWeightLost = weightLost;
                 user.UserCurrentWeight = user.UserStartingWeight - weightLost;
                 int weightDifference = user.UserStartingWeight - user.UserDesiredWeight;
                 ViewData["LostPercent"] = ((double)user.UserWeightLost / weightDifference)*100;
+                ViewData["LostWrittenPercent"] = (Math.Truncate((((double)user.UserWeightLost / weightDifference) * 100) * 100) / 100);
 
                 ViewData["CaloriesLeft"] = _viewModel.CaloriesLeft;
                 ViewData["CaloriesConsumed"] = _viewModel.CaloriesConsumed;
+                ViewData["CaloriePercent"] = ((double)_viewModel.CaloriesLeft / _viewModel.DailyCalorieGoal) * 100;
+
+                var percentEaten = ((double)_viewModel.CaloriesConsumed / _viewModel.DailyCalorieGoal) *100;
+                ViewData["CaloriesWrittenPercent"] = (Math.Truncate(percentEaten * 100) / 100);
+
+                await _context.SaveChangesAsync();
 
             }
             else
@@ -106,16 +127,35 @@ namespace Fitness_Tracker.Controllers
             //GuifinalUser user = new GuifinalUser();
             var user = await _context.GuifinalUsers.FindAsync(User.Identity.Name);
 
-            ViewBag.UserGender = new SelectList(_context.GuifinalGenders, "GenderId", "GenderName", user.UserGender);
-            ViewBag.UserActivity = new SelectList(_context.GuifinalActivities, "ActivityId", "ActivityDescriptor", user.UserActivity);
+            if(user != null)
+            {
+                ViewBag.UserGender = new SelectList(_context.GuifinalGenders, "GenderId", "GenderName", user.UserGender);
+                ViewBag.UserActivity = new SelectList(_context.GuifinalActivities, "ActivityId", "ActivityDescriptor", user.UserActivity);
+                return View(user);
+            }
+            else
+            {
+                ViewBag.UserGender = new SelectList(_context.GuifinalGenders, "GenderId", "GenderName");
+                ViewBag.UserActivity = new SelectList(_context.GuifinalActivities, "ActivityId", "ActivityDescriptor");
+                return View();
+            }
 
-            return View(user);
+            
         }
 
         [HttpPost]
         public async Task<IActionResult> EditInfo(int startingWeight, int currentWeight, int desiredWeight, int HeightInInches, int gender, int activity, DateTime birthday, int ctlw)
         {
             var user = await _context.GuifinalUsers.FindAsync(User.Identity.Name);
+            bool isNew = false;
+
+            if(user == null)
+            {
+                user = new GuifinalUser();
+                user.UserId = User.Identity.Name;
+                isNew = true;
+            }
+
             user.UserStartingWeight = startingWeight;
             user.UserCurrentWeight = currentWeight;
             user.UserDesiredWeight = desiredWeight;
@@ -131,7 +171,12 @@ namespace Fitness_Tracker.Controllers
 
             user.UserCaloriesToLoseWeight = ctlw;
 
+            if(isNew)
+            {
+                _context.GuifinalUsers.Add(user);
+            }
             await _context.SaveChangesAsync();
+
 
             ViewBag.UserGender = new SelectList(_context.GuifinalGenders, "GenderId", "GenderName", user.UserGender);
             ViewBag.UserActivity = new SelectList(_context.GuifinalActivities, "ActivityId", "ActivityDescriptor", user.UserActivity);

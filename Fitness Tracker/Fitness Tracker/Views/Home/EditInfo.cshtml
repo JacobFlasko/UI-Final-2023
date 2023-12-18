@@ -10,12 +10,19 @@
 </head>
 
 <body class="bg-light">
-
-    <h1 class="text-center">Enter your information</h1>
+    @if (Model != null)
+    {
+        <h1 class="text-center">@Model.UserId 's Information</h1>
+    }
+    else
+    {
+        <h1 class="text-center">Enter your information</h1>
+    }
+    
 
     <div class="d-flex justify-content-around">
         <div>
-            <h2>@Model.UserId 's Information</h2>
+            
             <form method="post" asp-action="EditInfo">
 
                 <h3>Weight</h3>
