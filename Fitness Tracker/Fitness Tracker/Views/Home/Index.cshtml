@@ -86,10 +86,10 @@
                             <p>Starting Weight: <span class="font-weight-bold">@Model.UserStartingWeight</span> lbs</p>
                             <p>Current Weigth: <span class="font-weight-bold">@Model.UserCurrentWeight</span> lbs</p>
                             <p>Goal Weight: <span class="font-weight-bold">@Model.UserDesiredWeight</span> lbs</p>
-                            <form asp-controller="Home" asp-action="RecordWeightLost">
+                            <form asp-action="Index" method="post">
                                 <div class="form-group">
                                     <label for="weightLost">Enter Weight Lost (lbs):</label>
-                                    <input type="number" class="form-control w-75 mt-3" value="@Model.UserWeightLost">
+                                    <input asp-for="UserWeightLost" type="number" class="form-control w-75 mt-3" name="weightLost">
                                 </div>
 
                                 <button type="submit" class="btn btn-success mt-4">Update Weight</button>
@@ -101,19 +101,19 @@
                     <img id="calorieImage" class="w-75 h-auto m-3" src="~/images/Calories/100percent.png" />
 
                     <h1>@ViewData["LostPercent"]</h1>
-                    @if (Double.Parse(ViewData["LostPercent"].ToString()) <= 0.25)
+                    @if (Double.Parse(ViewData["LostPercent"].ToString()) <= 25)
                     {
                         <img id="weightImage" class="w-75 h-auto m-3" src="~/images/Weight/Large.png" />
                     }
-                    else if (Double.Parse(ViewData["LostPercent"].ToString()) <= 0.50)
+                    else if (Double.Parse(ViewData["LostPercent"].ToString()) <= 50)
                     {
                         <img id="weightImage" class="w-75 h-auto m-3" src="~/images/Weight/Medium-Large.png" />
                     }
-                    else if (Double.Parse(ViewData["LostPercent"].ToString()) <= 0.75)
+                    else if (Double.Parse(ViewData["LostPercent"].ToString()) <= 75)
                     {
                         <img id="weightImage" class="w-75 h-auto m-3" src="~/images/Weight/Medium.png" />
                     }
-                    else if (Double.Parse(ViewData["LostPercent"].ToString()) < 1)
+                    else if (Double.Parse(ViewData["LostPercent"].ToString()) < 100)
                     {
                         <img id="weightImage" class="w-75 h-auto m-3" src="~/images/Weight/Small-Medium.png" />
                     }

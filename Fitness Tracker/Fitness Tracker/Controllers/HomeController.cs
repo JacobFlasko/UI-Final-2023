@@ -31,14 +31,14 @@ namespace Fitness_Tracker.Controllers
                 var temp = _context.GuifinalUsers.FindAsync(User.Identity.Name);
                 user = temp.Result;
                 int weightDifference = user.UserStartingWeight - user.UserDesiredWeight;
-                ViewData["LostPercent"] = (double)user.UserWeightLost/ weightDifference;
+                ViewData["LostPercent"] = ((double)user.UserWeightLost/ weightDifference)*100;
             }
             else
             {
                 //user.UserId = User.Identity.Name;
             }
 
-            return View(user);
+            return View("Index", user);
         }
 
         [HttpPost]
@@ -53,16 +53,19 @@ namespace Fitness_Tracker.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
-        public IActionResult RecordWeightLost(GuifinalUser user)
+        [HttpPost]
+        public IActionResult Index(int weightLost)
         {
+            GuifinalUser user = new GuifinalUser();
             if (User.Identity.IsAuthenticated)
             {
-                //user.UserCurrentWeight -= weightLost;
-                int lostWeight = user.UserStartingWeight - user.UserCurrentWeight;
+                var temp = _context.GuifinalUsers.FindAsync(User.Identity.Name);
+                user = temp.Result;
+                user.UserWeightLost = weightLost;
+                user.UserCurrentWeight = user.UserStartingWeight - weightLost;
                 int weightDifference = user.UserStartingWeight - user.UserDesiredWeight;
-                ViewData["LostPercent"] = (double)lostWeight / weightDifference;
-                ViewData["LostWeight"] = lostWeight;
+                ViewData["LostPercent"] = ((double)user.UserWeightLost / weightDifference)*100;
+                //ViewData["LostWeight"] = lostWeight;
             }
             else
             {
@@ -72,7 +75,7 @@ namespace Fitness_Tracker.Controllers
             // Record the weight lost and update the view model
 
 
-            return RedirectToAction("Index", user);
+            return View("Index", user);
         }
 
         public IActionResult Privacy()
