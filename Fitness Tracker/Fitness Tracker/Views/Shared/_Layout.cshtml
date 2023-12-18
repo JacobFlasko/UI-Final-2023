@@ -1,11 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@model IEnumerable<Fitness_Tracker.Models.GuifinalUser>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - FatAttack</title>
+    <title>@ViewData["Title"] - Fitness_Tracker</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/bootstrap.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Fitness_Tracker.styles.css" asp-append-version="true" />
 </head>
@@ -13,7 +13,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a style="margin-left: 5%" class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">FatAttack</a>
+                <a style="margin-left: 5%" class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Fitness_Tracker</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -26,6 +26,19 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Info">Enter Info</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="EditInfo">Edit Info</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ViewInfo">View Info</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="GuifinalUsers" asp-action="Create">Create</a>
+                        </li>
+                        
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
