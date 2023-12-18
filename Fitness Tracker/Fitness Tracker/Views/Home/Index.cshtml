@@ -22,20 +22,6 @@
             } else {
                 calorieImage.src = '~/images/Calories/empty.png';
             }
-
-            // Update the source of the weight image based on weight lost
-            var weightImage = document.getElementById('weightImage');
-            if (weightLost >= 10) {
-                weightImage.src = '~/images/Weight/Large.png';
-            } else if (weightLost >= 5) {
-                weightImage.src = '~/images/Weight/Medium-Large.png';
-            } else if (weightLost >= 2) {
-                weightImage.src = '~/images/Weight/Medium.png';
-            } else if (weightLost >= 0.5) {
-                weightImage.src = '~/images/Weight/Small-Medium.png';
-            } else {
-                weightImage.src = '~/images/Weight/Small.png';
-            }
         }
     </script>
 </head>

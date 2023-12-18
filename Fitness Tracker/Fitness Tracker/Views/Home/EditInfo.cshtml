@@ -12,75 +12,64 @@
 <body class="bg-light">
 
     <h1 class="text-center">Enter your information</h1>
-    
-    <h1>@ViewData["UserGender"]</h1>
 
     <div class="d-flex justify-content-around">
         <div>
-            <form method="post">
+            <h2>@Model.UserId 's Information</h2>
+            <form method="post" asp-action="EditInfo">
 
-                <div>
-                    <h3>Username</h3>
-                    <div class="form-group">
-                        <label for="UserId">User ID</label>
-                        <input asp-for="UserId" type="text" class="form-control w-75" name=UserId placeholder="name" required>
-                        <span asp-validation-for="UserId" class="text-danger"></span>
-                    </div>
-
-                    <h3>Weight</h3>
-                    <div class="form-group">
-                        <label for="startingWeight">Starting Weight</label>
-                        <input asp-for="UserStartingWeight" type="text" class="form-control w-75" name=startingWeight placeholder="000" required>
-                        <span asp-validation-for="UserStartingWeight" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="currentWeight">Current Weight</label>
-                        <input asp-for="UserCurrentWeight" type="text" class="form-control w-75" name=currentWeight placeholder="000" required>
-                        <span asp-validation-for="UserCurrentWeight" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="desiredWeight">Desired Weight</label>
-                        <input asp-for="UserDesiredWeight" type="text" class="form-control w-75" name=desiredWeight placeholder="000" required>
-                        <span asp-validation-for="UserDesiredWeight" class="text-danger"></span>
-                    </div>
+                <h3>Weight</h3>
+                <div class="form-group">
+                    <label for="startingWeight">Starting Weight</label>
+                    <input asp-for="UserStartingWeight" type="number" class="form-control w-75" name=startingWeight placeholder="000" required>
+                    <span asp-validation-for="UserStartingWeight" class="text-danger"></span>
                 </div>
 
-                <div>
-                    <h3>Height(in)</h3>
-                    <div class="form-group">
-                        <input asp-for="UserHeight" type="text" class="form-control w-75" name=HeightInInches placeholder="00" required>
-                        <span asp-validation-for="UserHeight" class="text-danger"></span>
-                    </div>
+                <div class="form-group">
+                    <label for="currentWeight">Current Weight</label>
+                    <input asp-for="UserCurrentWeight" type="number" class="form-control w-75" name=currentWeight placeholder="000" required>
+                    <span asp-validation-for="UserCurrentWeight" class="text-danger"></span>
                 </div>
 
-                <div>
-                    <h3>Gender</h3>
-                    <div class="form-group">
-                        <label asp-for="UserGender" class="control-label"></label>
-                        <select asp-for="UserGender" class="form-control" asp-items="ViewBag.UserGender"></select>
-                        <span asp-validation-for="UserGender" class="text-danger"></span>
-                    </div>
+                <div class="form-group">
+                    <label for="desiredWeight">Desired Weight</label>
+                    <input asp-for="UserDesiredWeight" type="number" class="form-control w-75" name=desiredWeight placeholder="000" required>
+                    <span asp-validation-for="UserDesiredWeight" class="text-danger"></span>
                 </div>
 
-                <div>
-                    <h3>Describe your activity level: </h3>
-                    <div class="form-group">
-                        <select asp-for="UserActivity" class="form-control" asp-items="ViewBag.UserActivity" required></select>
-                        <span asp-validation-for="UserActivity" class="text-danger"></span>
-                    </div>
+                <h3>Height(in)</h3>
+                <div class="form-group">
+                    <input asp-for="UserHeight" type="number" class="form-control w-75" name=HeightInInches placeholder="00" required>
+                    <span asp-validation-for="UserHeight" class="text-danger"></span>
                 </div>
 
-                <div>
-                    <h3>Birthday</h3>
-                    <div class="form-group">
-                        <input asp-for="UserBirthday" type="date" class="form-control w-75" name=Birthday placeholder="MM/DD/YYYY" required>
-                        <span asp-validation-for="UserBirthday" class="text-danger"></span>
-                    </div>
+
+                <h3>Gender</h3>
+                <div class="form-group">
+                    <label asp-for="UserGender" class="control-label"></label>
+                    <select asp-for="UserGender" class="form-control" asp-items="ViewBag.UserGender" name="gender"></select>
+                    <span asp-validation-for="UserGender" class="text-danger"></span>
                 </div>
 
-                <button type="submit" value="Create" class="btn btn-success mt-4">Enter Information</button>
+                <h3>Describe your activity level: </h3>
+                <div class="form-group">
+                    <select asp-for="UserActivity" class="form-control" asp-items="ViewBag.UserActivity" name="activity" required></select>
+                    <span asp-validation-for="UserActivity" class="text-danger"></span>
+                </div>
+
+                <h3>Birthday</h3>
+                <div class="form-group">
+                    <input asp-for="UserBirthday" type="date" class="form-control w-75" name=Birthday placeholder="MM/DD/YYYY" name="birthday" required>
+                    <span asp-validation-for="UserBirthday" class="text-danger"></span>
+                </div>
+
+                <h3>Calories to lose weight (<a href="https://www.calculator.net/calorie-calculator.html?cage=19&csex=m&cheightfeet=6&cheightinch=3&cpound=240&cheightmeter=180&ckg=65&cactivity=1.375&cmop=0&coutunit=c&cformula=m&cfatpct=20&printit=0&ctype=standard">Use this Link</a>)</h3>
+                <div class="form-group">
+                    <input asp-for="UserCaloriesToLoseWeight" type="number" class="form-control w-75" name=Birthday placeholder="0000" name="ctlw" required>
+                    <span asp-validation-for="UserCaloriesToLoseWeight" class="text-danger"></span>
+                </div>
+
+                <button type="submit" value="Create" class="btn btn-success mt-4">Edit Information</button>
 
             </form>
         </div>

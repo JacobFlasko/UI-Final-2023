@@ -112,6 +112,33 @@ namespace Fitness_Tracker.Controllers
             return View(user);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> EditInfo(int startingWeight, int currentWeight, int desiredWeight, int HeightInInches, int gender, int activity, DateTime birthday, int ctlw)
+        {
+            var user = await _context.GuifinalUsers.FindAsync(User.Identity.Name);
+            user.UserStartingWeight = startingWeight;
+            user.UserCurrentWeight = currentWeight;
+            user.UserDesiredWeight = desiredWeight;
+
+            user.UserWeightLost = user.UserStartingWeight - user.UserCurrentWeight;
+
+            user.UserHeight = HeightInInches;
+            user.UserGender = gender;
+            user.UserActivity = activity;
+            user.UserBirthday = birthday;
+
+            user.UserAge = (int)((DateTime.Now - user.UserBirthday).TotalDays/365);
+
+            user.UserCaloriesToLoseWeight = ctlw;
+
+            await _context.SaveChangesAsync();
+
+            ViewBag.UserGender = new SelectList(_context.GuifinalGenders, "GenderId", "GenderName", user.UserGender);
+            ViewBag.UserActivity = new SelectList(_context.GuifinalActivities, "ActivityId", "ActivityDescriptor", user.UserActivity);
+
+            return View("EditInfo", user);
+        }
+
         public IActionResult Privacy()
         {
             return View();
