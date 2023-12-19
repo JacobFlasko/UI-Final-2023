@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Fitness_Tracker.Models
 {
     public partial class GuifinalUser
     {
         public string UserId { get; set; }
+
         public int UserStartingWeight { get; set; }
         public int UserCurrentWeight { get; set; }
         public int UserDesiredWeight { get; set; }
@@ -14,6 +16,7 @@ namespace Fitness_Tracker.Models
 
         [DisplayName("Gender")]
         public int UserGender { get; set; }
+
         public int UserActivity { get; set; }
         public DateTime UserBirthday { get; set; }
         public int UserAge { get; set; }

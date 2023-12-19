@@ -23,12 +23,13 @@
     <div class="d-flex justify-content-around">
         <div>
             
+            <h3 class="text-danger">@ViewData["Error"]</h3>
             <form method="post" asp-action="EditInfo">
 
                 <h3>Weight</h3>
                 <div class="form-group">
                     <label for="startingWeight">Starting Weight</label>
-                    <input asp-for="UserStartingWeight" type="number" class="form-control w-75" name=startingWeight placeholder="000" required>
+                    <input asp-for="UserStartingWeight" type="number" class="form-control w-75" name=startingWeight placeholder="000">
                     <span asp-validation-for="UserStartingWeight" class="text-danger"></span>
                 </div>
 

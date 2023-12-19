@@ -33,8 +33,19 @@ namespace Fitness_Tracker.Controllers
                 if(user != null)
                 {
                     int weightDifference = user.UserStartingWeight - user.UserDesiredWeight;
-                    ViewData["LostPercent"] = ((double)user.UserWeightLost / weightDifference) * 100;
-                    ViewData["LostWrittenPercent"] = (Math.Truncate((((double)user.UserWeightLost / weightDifference) * 100) * 100) / 100);
+
+                    if(user.UserWeightLost < 0)
+                    {
+                        ViewData["LostPercent"] = 0;
+                        ViewData["LostWrittenPercent"] = 0;
+                    }
+                    else
+                    {
+                        ViewData["LostPercent"] = ((double)user.UserWeightLost / weightDifference) * 100;
+                        ViewData["LostWrittenPercent"] = (Math.Truncate((((double)user.UserWeightLost / weightDifference) * 100) * 100) / 100);
+                    }
+                    
+                    
 
 
                     _viewModel.DailyCalorieGoal = user.UserCaloriesToLoseWeight;
@@ -157,15 +168,102 @@ namespace Fitness_Tracker.Controllers
         [HttpPost]
         public async Task<IActionResult> EditInfo(int startingWeight, int currentWeight, int desiredWeight, int HeightInInches, int gender, int activity, DateTime birthday, int ctlw)
         {
+            
+
             var user = await _context.GuifinalUsers.FindAsync(User.Identity.Name);
             bool isNew = false;
 
             if(user == null)
             {
+                ViewBag.UserGender = new SelectList(_context.GuifinalGenders, "GenderId", "GenderName");
+                ViewBag.UserActivity = new SelectList(_context.GuifinalActivities, "ActivityId", "ActivityDescriptor");
                 user = new GuifinalUser();
                 user.UserId = User.Identity.Name;
                 isNew = true;
             }
+            else
+            {
+                ViewBag.UserGender = new SelectList(_context.GuifinalGenders, "GenderId", "GenderName", user.UserGender);
+                ViewBag.UserActivity = new SelectList(_context.GuifinalActivities, "ActivityId", "ActivityDescriptor", user.UserActivity);
+            }
+
+            
+
+            //IDK if I need this but Ive been working on this for like 4-5 hours today and Im just done with it
+            if (!ModelState.IsValid)
+            {
+                return View("EditInfo", user);
+            }
+
+            //MISC validation
+            if(startingWeight < 1)
+            {
+                ViewData["Error"] = "You cannot have a starting weight less than 1";
+                return View("EditInfo", user);
+            }
+            else if(startingWeight > 1000)
+            {
+                ViewData["Error"] = "You cannot have a starting weigth more than 1000lbs";
+                return View("EditInfo", user);
+            }
+
+            if(currentWeight < 1)
+            {
+                ViewData["Error"] = "You're current weight cannot be less than 1lbs";
+                return View("EditInfo", user);
+            }
+            else if(currentWeight > 1000)
+            {
+                ViewData["Error"] = "You're current weight cannot be more than 1000lbs";
+                return View("EditInfo", user);
+            }
+
+            if(desiredWeight < 1)
+            {
+                ViewData["Error"] = "You cannot have a desired weight less than 1lbs";
+                return View("EditInfo", user);
+            }
+            else if(desiredWeight > 1000)
+            {
+                ViewData["Error"] = "You cannot have a desired weight more than 1000lbs";
+                return View("EditInfo", user);
+            }
+            else if(desiredWeight >= startingWeight)
+            {
+                ViewData["Error"] = "Sorry, this website is meant for losing weight, not gaining weight. Your desired weight cannot be greater than your starting weight.";
+                return View("EditInfo", user);
+            }
+
+            if(HeightInInches < 1)
+            {
+                ViewData["Error"] = "Your height cannot be less than 1in.";
+                return View("EditInfo", user);
+            }
+            else if(HeightInInches > 150)
+            {
+                ViewData["Error"] = "Your height cannot be greater than 150in.";
+                return View("EditInfo", user);
+            }
+
+            DateTime d1 = DateTime.Parse("1/1/1900");
+            if(birthday.Date < d1.Date)
+            {
+                ViewData["Error"] = "You cannot put your birthday as anything before the 20th century";
+                return View("EditInfo", user);
+            }
+
+            if(ctlw < 1)
+            {
+                ViewData["Error"] = "Your goal calories cannot be less than 1";
+                return View("EditInfo", user);
+            }
+            else if(ctlw > 10000)
+            {
+                ViewData["Error"] = "Your goal calories cannot be greater than 10000";
+                return View("EditInfo", user);
+            }
+
+
 
             user.UserStartingWeight = startingWeight;
             user.UserCurrentWeight = currentWeight;
@@ -188,9 +286,6 @@ namespace Fitness_Tracker.Controllers
             }
             await _context.SaveChangesAsync();
 
-
-            ViewBag.UserGender = new SelectList(_context.GuifinalGenders, "GenderId", "GenderName", user.UserGender);
-            ViewBag.UserActivity = new SelectList(_context.GuifinalActivities, "ActivityId", "ActivityDescriptor", user.UserActivity);
 
             return View("EditInfo", user);
         }

@@ -87,8 +87,7 @@ public class AppTest {
 
     //public static WebElement AgeInput = driver.findElement(By.xpath("Enter Xpath Here"));
 
-    //This test should work but Selenium fucking sucks so it doesnt
-    /*@ParameterizedTest
+    @ParameterizedTest
     @CsvSource({
             "06/20/2002,21",
             "06/20/2003,20",
@@ -96,32 +95,28 @@ public class AppTest {
             "06/20/2005,18",
             "06/20/2006,17"
     })
-    @ParameterizedTest
-    @CsvSource({
-            "06/20/2002,21"
-    })
-    public void ageIsCalculatedCorrectly(String birthDate, String expected) {
+    public void ageIsCalculatedCorrectly(String birthDate, int expected) {
         WebElement editInfo = driver.findElement(By.xpath("/html/body/header/nav/div/div/ul[1]/li[2]/a"));
         editInfo.click();
-        //birthdayInput = driver.findElement(By.id("UserBirthday"));
-        //birthdayInput.sendKeys(birthDate);
+        birthdayInput = driver.findElement(By.id("UserBirthday"));
+        birthdayInput.sendKeys(birthDate);
         WebElement conformButton = driver.findElement(By.xpath("/html/body/div[1]/main/div/div/form/button"));
 
+        JavascriptExecutor jse2 = (JavascriptExecutor)driver;
+        jse2.executeScript("arguments[0].scrollIntoView()", conformButton);
 
-        
-        //((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", conformButton);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].style.visibility='visible'", conformButton);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
-        wait.until(ExpectedConditions.elementToBeClickable(conformButton));
-        
-        conformButton.click();
+        JavascriptExecutor executor = (JavascriptExecutor)driver;
+        executor.executeScript("arguments[0].click();", conformButton);
+
+        WebElement homePage = driver.findElement(By.xpath("/html/body/header/nav/div/div/ul[1]/li[1]/a"));
+        homePage.click();
 
 
-        //WebElement ageLabel = driver.findElement(By.xpath("/html/body/div[1]/main/div/div[1]/div/div[1]/p[3]"));
-        //String[] expected = { "21", "20", "19", "18", "17" };
-        //String actual = ageLabel.getDomProperty("textContent");
-        //assertEquals(expected, actual);
-    }*/
+        WebElement ageText = driver.findElement(By.xpath("/html/body/div[1]/main/div/div[1]/div/div[1]/p[4]"));
+        String total = ageText.getText().substring(ageText.getText().indexOf(":")+2);
+        int actual = Integer.parseInt(total);
+        assertEquals(expected, actual);
+    }
 
     // Test that profile page properly displays users information
 
@@ -399,185 +394,266 @@ public class AppTest {
 
     // public static WebElement submitFormButton = driver.findElement(By.xpath("Enter element xpath here"));
 
-    // @Test
-    // public void TestStartingWeightIsValidated() throws InterruptedException {
-    //     driver.get(homePageUrl);
-    //     startingWeightInput.sendKeys("-1");
-    //     currentWeightInput.sendKeys("200");
-    //     desiredWeightInput.sendKeys("185");
-    //     heightInput.sendKeys("72");
-    //     genderInput.sendKeys("Male");
-    //     activityLevelInput.sendKeys("5");
-    //     birthdayInput.sendKeys("06/20/2004");
-    //     dailyCaloriesInput.sendKeys("2000");
-    //     ageLabel.sendKeys("19");
-    //     submitFormButton.click();
-    //     Thread.sleep(1_000);
-    //     WebElement startingWeightInputError = driver.findElement(By.xpath("Enter element xpath here"));
-    //     String expected = "Enter the expected error message here.";
-    //     String actual = startingWeightInputError.getDomAttribute("textContent");
-    //     assertEquals(expected, actual);
-    // }
+    @Test
+    public void TestStartingWeightIsValidated() throws InterruptedException {
+        WebElement editInfo = driver.findElement(By.xpath("/html/body/header/nav/div/div/ul[1]/li[2]/a"));
+        editInfo.click();
 
-    // @Test
-    // public void TestCurrentWeightIsValidated() throws InterruptedException {
-    //     driver.get(homePageUrl);
-    //     startingWeightInput.sendKeys("225");
-    //     currentWeightInput.sendKeys("-1");
-    //     desiredWeightInput.sendKeys("185");
-    //     heightInput.sendKeys("72");
-    //     genderInput.sendKeys("Male");
-    //     activityLevelInput.sendKeys("5");
-    //     birthdayInput.sendKeys("06/20/2004");
-    //     dailyCaloriesInput.sendKeys("2000");
-    //     ageLabel.sendKeys("19");
-    //     submitFormButton.click();
-    //     Thread.sleep(1_000);
-    //     WebElement currentWeightInputError = driver.findElement(By.xpath("Enter element xpath here"));
-    //     String expected = "Enter the expected error message here.";
-    //     String actual = currentWeightInputError.getDomAttribute("textContent");
-    //     assertEquals(expected, actual);
-    // }
+        //Getting the form elements
+        WebElement startingWeightInput = driver.findElement(By.id("UserStartingWeight"));
+        WebElement currentWeightInput = driver.findElement(By.id("UserCurrentWeight"));
+        WebElement desiredWeightInput = driver.findElement(By.id("UserDesiredWeight"));
+        WebElement heightInput = driver.findElement(By.id("UserHeight"));
+        WebElement genderInput = driver.findElement(By.id("UserGender"));
+        WebElement activityLevelInput = driver.findElement(By.id("UserActivity"));
+        WebElement birthdayInput = driver.findElement(By.id("UserBirthday"));
+        WebElement dailyCaloriesInput = driver.findElement(By.id("UserCaloriesToLoseWeight"));
+        WebElement conformButton = driver.findElement(By.xpath("/html/body/div[1]/main/div/div/form/button"));
 
-    // @Test
-    // public void TestDesiredWeightIsValidated() throws InterruptedException {
-    //     driver.get(homePageUrl);
-    //     startingWeightInput.sendKeys("225");
-    //     currentWeightInput.sendKeys("200");
-    //     desiredWeightInput.sendKeys("-1");
-    //     heightInput.sendKeys("72");
-    //     genderInput.sendKeys("Male");
-    //     activityLevelInput.sendKeys("5");
-    //     birthdayInput.sendKeys("06/20/2004");
-    //     dailyCaloriesInput.sendKeys("2000");
-    //     ageLabel.sendKeys("19");
-    //     submitFormButton.click();
-    //     Thread.sleep(1_000);
-    //     WebElement desiredWeightInputError = driver.findElement(By.xpath("Enter element xpath here"));
-    //     String expected = "Enter the expected error message here.";
-    //     String actual = desiredWeightInputError.getDomAttribute("textContent");
-    //     assertEquals(expected, actual);
-    // }
+        startingWeightInput.clear();
+        currentWeightInput.clear();
+        desiredWeightInput.clear();
+        heightInput.clear();
+        birthdayInput.clear();
+        dailyCaloriesInput.clear();
 
-    // @Test
-    // public void TestHeightInputIsValidated() throws InterruptedException {
-    //     driver.get(homePageUrl);
-    //     startingWeightInput.sendKeys("225");
-    //     currentWeightInput.sendKeys("200");
-    //     desiredWeightInput.sendKeys("185");
-    //     heightInput.sendKeys("-1");
-    //     genderInput.sendKeys("Male");
-    //     activityLevelInput.sendKeys("5");
-    //     birthdayInput.sendKeys("06/20/2004");
-    //     dailyCaloriesInput.sendKeys("2000");
-    //     ageLabel.sendKeys("19");
-    //     submitFormButton.click();
-    //     Thread.sleep(1_000);
-    //     WebElement heightInputError = driver.findElement(By.xpath("Enter element xpath here"));
-    //     String expected = "Enter the expected error message here.";
-    //     String actual = heightInputError.getDomAttribute("textContent");
-    //     assertEquals(expected, actual);
-    // }
 
-    // @Test
-    // public void TestGenderInputIsValidated() throws InterruptedException {
-    //     driver.get(homePageUrl);
-    //     startingWeightInput.sendKeys("225");
-    //     currentWeightInput.sendKeys("200");
-    //     desiredWeightInput.sendKeys("185");
-    //     heightInput.sendKeys("72");
-    //     genderInput.sendKeys("♨️🙏❌👎🤷🌎$%#*&%^");
-    //     activityLevelInput.sendKeys("5");
-    //     birthdayInput.sendKeys("06/20/2004");
-    //     dailyCaloriesInput.sendKeys("2000");
-    //     ageLabel.sendKeys("19");
-    //     submitFormButton.click();
-    //     Thread.sleep(1_000);
-    //     WebElement GenderInputError = driver.findElement(By.xpath("Enter element xpath here"));
-    //     String expected = "Enter the expected error message here.";
-    //     String actual = GenderInputError.getDomAttribute("textContent");
-    //     assertEquals(expected, actual);
-    // }
+        startingWeightInput.sendKeys("-1");
+        currentWeightInput.sendKeys("200");
+        desiredWeightInput.sendKeys("185");
+        heightInput.sendKeys("72");
+        genderInput.sendKeys("0");
+        activityLevelInput.sendKeys("5");
+        birthdayInput.sendKeys("06/20/2004");
+        dailyCaloriesInput.sendKeys("2000");
+        
+        JavascriptExecutor executor = (JavascriptExecutor)driver;
+        executor.executeScript("arguments[0].click();", conformButton);
 
-    // @Test
-    // public void TestActivityLevelInputIsValidated() throws InterruptedException {
-    //     driver.get(homePageUrl);
-    //     startingWeightInput.sendKeys("225");
-    //     currentWeightInput.sendKeys("200");
-    //     desiredWeightInput.sendKeys("185");
-    //     heightInput.sendKeys("72");
-    //     genderInput.sendKeys("Female");
-    //     activityLevelInput.sendKeys("-1");
-    //     birthdayInput.sendKeys("06/20/2004");
-    //     dailyCaloriesInput.sendKeys("2000");
-    //     ageLabel.sendKeys("19");
-    //     submitFormButton.click();
-    //     Thread.sleep(1_000);
-    //     WebElement ActivityLevelInputError = driver.findElement(By.xpath("Enter element xpath here"));
-    //     String expected = "Enter the expected error message here.";
-    //     String actual = ActivityLevelInputError.getDomAttribute("textContent");
-    //     assertEquals(expected, actual);
-    // }
+        Thread.sleep(1_000);
 
-    // @Test
-    // public void TestBirthDayInputIsValidated() throws InterruptedException {
-    //     driver.get(homePageUrl);
-    //     startingWeightInput.sendKeys("225");
-    //     currentWeightInput.sendKeys("200");
-    //     desiredWeightInput.sendKeys("185");
-    //     heightInput.sendKeys("72");
-    //     genderInput.sendKeys("Female");
-    //     activityLevelInput.sendKeys("5");
-    //     birthdayInput.sendKeys("06/20/1500");
-    //     dailyCaloriesInput.sendKeys("2000");
-    //     ageLabel.sendKeys("19");
-    //     submitFormButton.click();
-    //     Thread.sleep(1_000);
-    //     WebElement BirthDayInputError = driver.findElement(By.xpath("Enter element xpath here"));
-    //     String expected = "Enter the expected error message here.";
-    //     String actual = BirthDayInputError.getDomAttribute("textContent");
-    //     assertEquals(expected, actual);
-    // }
+        WebElement error = driver.findElement(By.xpath("/html/body/div[1]/main/div/div/h3"));
+        String expected = "YOU CANNOT HAVE A STARTING WEIGHT LESS THAN 1";
+        
+        assertEquals(expected, error.getText());
+    }
 
-    // @Test
-    // public void TestCalorieInputIsValidated() throws InterruptedException {
-    //     driver.get(homePageUrl);
-    //     startingWeightInput.sendKeys("225");
-    //     currentWeightInput.sendKeys("200");
-    //     desiredWeightInput.sendKeys("185");
-    //     heightInput.sendKeys("72");
-    //     genderInput.sendKeys("Female");
-    //     activityLevelInput.sendKeys("5");
-    //     birthdayInput.sendKeys("06/20/2004");
-    //     dailyCaloriesInput.sendKeys("-2000");
-    //     ageLabel.sendKeys("19");
-    //     submitFormButton.click();
-    //     Thread.sleep(1_000);
-    //     WebElement CalorieInputError = driver.findElement(By.xpath("Enter element xpath here"));
-    //     String expected = "Enter the expected error message here.";
-    //     String actual = CalorieInputError.getDomAttribute("textContent");
-    //     assertEquals(expected, actual);
-    // }
+    @Test
+    public void TestCurrentWeightIsValidated() throws InterruptedException {
+        WebElement editInfo = driver.findElement(By.xpath("/html/body/header/nav/div/div/ul[1]/li[2]/a"));
+        editInfo.click();
 
-    // @Test
-    // public void TestAgeInputIsValidated() throws InterruptedException {
-    //     driver.get(homePageUrl);
-    //     startingWeightInput.sendKeys("225");
-    //     currentWeightInput.sendKeys("200");
-    //     desiredWeightInput.sendKeys("185");
-    //     heightInput.sendKeys("72");
-    //     genderInput.sendKeys("Female");
-    //     activityLevelInput.sendKeys("5");
-    //     birthdayInput.sendKeys("06/20/2004");
-    //     dailyCaloriesInput.sendKeys("2000");
-    //     ageLabel.sendKeys("-1");
-    //     submitFormButton.click();
-    //     Thread.sleep(1_000);
-    //     WebElement AgeInputWeightInputError = driver.findElement(By.xpath("Enter element xpath here"));
-    //     String expected = "Enter the expected error message here.";
-    //     String actual = AgeInputWeightInputError.getDomAttribute("textContent");
-    //     assertEquals(expected, actual);
-    // }
+        //Getting the form elements
+        WebElement startingWeightInput = driver.findElement(By.id("UserStartingWeight"));
+        WebElement currentWeightInput = driver.findElement(By.id("UserCurrentWeight"));
+        WebElement desiredWeightInput = driver.findElement(By.id("UserDesiredWeight"));
+        WebElement heightInput = driver.findElement(By.id("UserHeight"));
+        WebElement genderInput = driver.findElement(By.id("UserGender"));
+        WebElement activityLevelInput = driver.findElement(By.id("UserActivity"));
+        WebElement birthdayInput = driver.findElement(By.id("UserBirthday"));
+        WebElement dailyCaloriesInput = driver.findElement(By.id("UserCaloriesToLoseWeight"));
+        WebElement conformButton = driver.findElement(By.xpath("/html/body/div[1]/main/div/div/form/button"));
+
+        startingWeightInput.clear();
+        currentWeightInput.clear();
+        desiredWeightInput.clear();
+        heightInput.clear();
+        birthdayInput.clear();
+        dailyCaloriesInput.clear();
+
+        startingWeightInput.sendKeys("225");
+        currentWeightInput.sendKeys("-1");
+        desiredWeightInput.sendKeys("185");
+        heightInput.sendKeys("72");
+        genderInput.sendKeys("Male");
+        activityLevelInput.sendKeys("5");
+        birthdayInput.sendKeys("06/20/2004");
+        dailyCaloriesInput.sendKeys("2000");
+
+        JavascriptExecutor executor = (JavascriptExecutor)driver;
+        executor.executeScript("arguments[0].click();", conformButton);
+
+        Thread.sleep(1_000);
+
+        WebElement error = driver.findElement(By.xpath("/html/body/div[1]/main/div/div/h3"));
+        String expected = "You're current weight cannot be less than 1lbs".toUpperCase();
+        
+        assertEquals(expected, error.getText());
+    }
+
+    @Test
+    public void TestDesiredWeightIsValidated() throws InterruptedException {
+        WebElement editInfo = driver.findElement(By.xpath("/html/body/header/nav/div/div/ul[1]/li[2]/a"));
+        editInfo.click();
+
+        //Getting the form elements
+        WebElement startingWeightInput = driver.findElement(By.id("UserStartingWeight"));
+        WebElement currentWeightInput = driver.findElement(By.id("UserCurrentWeight"));
+        WebElement desiredWeightInput = driver.findElement(By.id("UserDesiredWeight"));
+        WebElement heightInput = driver.findElement(By.id("UserHeight"));
+        WebElement genderInput = driver.findElement(By.id("UserGender"));
+        WebElement activityLevelInput = driver.findElement(By.id("UserActivity"));
+        WebElement birthdayInput = driver.findElement(By.id("UserBirthday"));
+        WebElement dailyCaloriesInput = driver.findElement(By.id("UserCaloriesToLoseWeight"));
+        WebElement conformButton = driver.findElement(By.xpath("/html/body/div[1]/main/div/div/form/button"));
+
+        startingWeightInput.clear();
+        currentWeightInput.clear();
+        desiredWeightInput.clear();
+        heightInput.clear();
+        birthdayInput.clear();
+        dailyCaloriesInput.clear();
+
+        startingWeightInput.sendKeys("225");
+        currentWeightInput.sendKeys("200");
+        desiredWeightInput.sendKeys("-1");
+        heightInput.sendKeys("72");
+        genderInput.sendKeys("Male");
+        activityLevelInput.sendKeys("5");
+        birthdayInput.sendKeys("06/20/2004");
+        dailyCaloriesInput.sendKeys("2000");
+
+        JavascriptExecutor executor = (JavascriptExecutor)driver;
+        executor.executeScript("arguments[0].click();", conformButton);
+        
+        Thread.sleep(1_000);
+        
+        WebElement error = driver.findElement(By.xpath("/html/body/div[1]/main/div/div/h3"));
+        String expected = "You cannot have a desired weight less than 1lbs".toUpperCase();
+        
+        assertEquals(expected, error.getText());
+    }
+
+    @Test
+    public void TestHeightInputIsValidated() throws InterruptedException {
+        WebElement editInfo = driver.findElement(By.xpath("/html/body/header/nav/div/div/ul[1]/li[2]/a"));
+        editInfo.click();
+
+        //Getting the form elements
+        WebElement startingWeightInput = driver.findElement(By.id("UserStartingWeight"));
+        WebElement currentWeightInput = driver.findElement(By.id("UserCurrentWeight"));
+        WebElement desiredWeightInput = driver.findElement(By.id("UserDesiredWeight"));
+        WebElement heightInput = driver.findElement(By.id("UserHeight"));
+        WebElement genderInput = driver.findElement(By.id("UserGender"));
+        WebElement activityLevelInput = driver.findElement(By.id("UserActivity"));
+        WebElement birthdayInput = driver.findElement(By.id("UserBirthday"));
+        WebElement dailyCaloriesInput = driver.findElement(By.id("UserCaloriesToLoseWeight"));
+        WebElement conformButton = driver.findElement(By.xpath("/html/body/div[1]/main/div/div/form/button"));
+
+        startingWeightInput.clear();
+        currentWeightInput.clear();
+        desiredWeightInput.clear();
+        heightInput.clear();
+        birthdayInput.clear();
+        dailyCaloriesInput.clear();
+
+        startingWeightInput.sendKeys("225");
+        currentWeightInput.sendKeys("200");
+        desiredWeightInput.sendKeys("185");
+        heightInput.sendKeys("-1");
+        genderInput.sendKeys("Male");
+        activityLevelInput.sendKeys("5");
+        birthdayInput.sendKeys("06/20/2004");
+        dailyCaloriesInput.sendKeys("2000");
+
+        JavascriptExecutor executor = (JavascriptExecutor)driver;
+        executor.executeScript("arguments[0].click();", conformButton);
+
+        Thread.sleep(1_000);
+       
+        WebElement error = driver.findElement(By.xpath("/html/body/div[1]/main/div/div/h3"));
+        String expected = "Your height cannot be less than 1in.".toUpperCase();
+        
+        assertEquals(expected, error.getText());;
+    }
+
+    //I removed testing Gender and Activity level since (from my knowledge) it is literally impossible to get either of them to a value outside of what is intended. Trying to do so using Selenium either crashing the test (which IMO proves that I dont need to test it) or seemingly does nothing.
+
+    @Test
+    public void TestBirthDayInputIsValidated() throws InterruptedException {
+        WebElement editInfo = driver.findElement(By.xpath("/html/body/header/nav/div/div/ul[1]/li[2]/a"));
+        editInfo.click();
+
+        //Getting the form elements
+        WebElement startingWeightInput = driver.findElement(By.id("UserStartingWeight"));
+        WebElement currentWeightInput = driver.findElement(By.id("UserCurrentWeight"));
+        WebElement desiredWeightInput = driver.findElement(By.id("UserDesiredWeight"));
+        WebElement heightInput = driver.findElement(By.id("UserHeight"));
+        WebElement genderInput = driver.findElement(By.id("UserGender"));
+        WebElement activityLevelInput = driver.findElement(By.id("UserActivity"));
+        WebElement birthdayInput = driver.findElement(By.id("UserBirthday"));
+        WebElement dailyCaloriesInput = driver.findElement(By.id("UserCaloriesToLoseWeight"));
+        WebElement conformButton = driver.findElement(By.xpath("/html/body/div[1]/main/div/div/form/button"));
+
+        startingWeightInput.clear();
+        currentWeightInput.clear();
+        desiredWeightInput.clear();
+        heightInput.clear();
+        birthdayInput.clear();
+        dailyCaloriesInput.clear();
+
+        startingWeightInput.sendKeys("225");
+        currentWeightInput.sendKeys("200");
+        desiredWeightInput.sendKeys("185");
+        heightInput.sendKeys("72");
+        genderInput.sendKeys("Female");
+        activityLevelInput.sendKeys("5");
+        birthdayInput.sendKeys("06/20/1500");
+        dailyCaloriesInput.sendKeys("2000");
+
+        JavascriptExecutor executor = (JavascriptExecutor)driver;
+        executor.executeScript("arguments[0].click();", conformButton);
+
+        Thread.sleep(1_000);
+        
+        WebElement error = driver.findElement(By.xpath("/html/body/div[1]/main/div/div/h3"));
+        String expected = "You cannot put your birthday as anything before the 20th century".toUpperCase();
+        
+        assertEquals(expected, error.getText());
+    }
+
+    @Test
+    public void TestCalorieInputIsValidated() throws InterruptedException {
+        WebElement editInfo = driver.findElement(By.xpath("/html/body/header/nav/div/div/ul[1]/li[2]/a"));
+        editInfo.click();
+
+        //Getting the form elements
+        WebElement startingWeightInput = driver.findElement(By.id("UserStartingWeight"));
+        WebElement currentWeightInput = driver.findElement(By.id("UserCurrentWeight"));
+        WebElement desiredWeightInput = driver.findElement(By.id("UserDesiredWeight"));
+        WebElement heightInput = driver.findElement(By.id("UserHeight"));
+        WebElement genderInput = driver.findElement(By.id("UserGender"));
+        WebElement activityLevelInput = driver.findElement(By.id("UserActivity"));
+        WebElement birthdayInput = driver.findElement(By.id("UserBirthday"));
+        WebElement dailyCaloriesInput = driver.findElement(By.id("UserCaloriesToLoseWeight"));
+        WebElement conformButton = driver.findElement(By.xpath("/html/body/div[1]/main/div/div/form/button"));
+
+        startingWeightInput.clear();
+        currentWeightInput.clear();
+        desiredWeightInput.clear();
+        heightInput.clear();
+        birthdayInput.clear();
+        dailyCaloriesInput.clear();
+
+        startingWeightInput.sendKeys("225");
+        currentWeightInput.sendKeys("200");
+        desiredWeightInput.sendKeys("185");
+        heightInput.sendKeys("72");
+        genderInput.sendKeys("Female");
+        activityLevelInput.sendKeys("5");
+        birthdayInput.sendKeys("06/20/2004");
+        dailyCaloriesInput.sendKeys("-2000");
+
+        JavascriptExecutor executor = (JavascriptExecutor)driver;
+        executor.executeScript("arguments[0].click();", conformButton);
+
+        Thread.sleep(1_000);
+        
+        WebElement error = driver.findElement(By.xpath("/html/body/div[1]/main/div/div/h3"));
+        String expected = "Your goal calories cannot be less than 1".toUpperCase();
+        
+        assertEquals(expected, error.getText());
+    }
 
     // Closing out the Driver
     @AfterAll
