@@ -28,6 +28,7 @@
                     <div class="container mt-5">
                         <!--Misc Info-->
                         <div class="mt-4">
+                        <h3>Misc Info</h3>
                             <p>Height: @Model.UserHeight in.</p>
                             <p>Gender: @ViewData["Gender"]</p>
                             <p>Birthday: @ViewData["Birthday"]</p>
@@ -37,7 +38,7 @@
 
                         <!-- Record Food Eaten -->
                         <div class="mt-4">
-                            <h3>Record Food Eaten</h3>
+                        <h3>Record Food Eaten</h3>
                             <form method="post" asp-action="RecordFood">
                                 <div class="form-group">
                                     <label for="foodName">Food Name:</label>

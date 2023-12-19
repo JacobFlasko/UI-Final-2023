@@ -100,6 +100,7 @@ namespace Fitness_Tracker.Controllers
 
             ViewData["Birthday"] = user.UserBirthday.Month + "/" + user.UserBirthday.Day + "/" + user.UserBirthday.Year;
             ViewData["Gender"] = _context.GuifinalGenders.FindAsync(user.UserGender).Result.GenderName;
+            ViewData["Activity"] = _context.GuifinalActivities.FindAsync(user.UserActivity).Result.ActivityDescriptor;
 
             //ViewData["LostWeight"] = lostWeight;
 
@@ -128,6 +129,7 @@ namespace Fitness_Tracker.Controllers
 
                 ViewData["Birthday"] = user.UserBirthday.Month + "/" + user.UserBirthday.Day + "/" + user.UserBirthday.Year;
                 ViewData["Gender"] = _context.GuifinalGenders.FindAsync(user.UserGender).Result.GenderName;
+                ViewData["Activity"] = _context.GuifinalActivities.FindAsync(user.UserActivity).Result.ActivityDescriptor;
 
 
                 await _context.SaveChangesAsync();
